@@ -6,6 +6,7 @@
 package tampilan;
 
 import java.awt.HeadlessException;
+import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -60,6 +61,12 @@ public class login extends javax.swing.JFrame {
             }
         });
 
+        txtPassword.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtPasswordKeyPressed(evt);
+            }
+        });
+
         jLabel2.setText("Username :");
 
         jLabel3.setText("Password :");
@@ -74,6 +81,11 @@ public class login extends javax.swing.JFrame {
 
         btnCancel.setText("Batal Masuk");
         btnCancel.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnCancel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -164,6 +176,17 @@ public class login extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Koneksi Yang di Lakukan gagal "+e);
         }
     }//GEN-LAST:event_btnLoginActionPerformed
+
+    private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
+        JOptionPane.showMessageDialog(null, "Tubes PBO IF A");
+        dispose();
+    }//GEN-LAST:event_btnCancelActionPerformed
+
+    private void txtPasswordKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPasswordKeyPressed
+      if(evt.getKeyCode() == KeyEvent.VK_ENTER){
+          btnLoginActionPerformed(new ActionEvent(evt.getKeyCode(), evt.getID(),"Tekan Login"));
+      }
+    }//GEN-LAST:event_txtPasswordKeyPressed
 
     /**
      * @param args the command line arguments
