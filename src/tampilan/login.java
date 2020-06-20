@@ -158,15 +158,30 @@ public class login extends javax.swing.JFrame {
             ResultSet result = stat.executeQuery("select * from tb_user where username ='"+txtUsername.getText()+"'");
             if(result.next()){
                 if(txtPassword.getText().equals(result.getString("password"))){
-                    JOptionPane.showMessageDialog(null, "Selamat Data "+txtUsername.getText());
-                    menu_utama mu = new menu_utama();
-                    mu.setExtendedState(JFrame.MAXIMIZED_BOTH);
-                    mu.setVisible(true);
+                    
+                    u_name = result.getString("nama");
+                    u_level    = result.getString("level");
+                    login.setU_name(u_name);
+                    login.setU_level(u_level);
+                    if(u_level.equals("admin")){
+                        menu_utama mu = new menu_utama();
+                        mu.setExtendedState(JFrame.MAXIMIZED_BOTH);
+                        mu.setVisible(true);
+                        mu.hakAksesAdmin();
+                        JOptionPane.showMessageDialog(null, "Selamat Data Admin di Aplikasi Inventori Barang Tubes PBO IF A");
+                    }else{
+                        menu_utama mu = new menu_utama();
+                        mu.setExtendedState(JFrame.MAXIMIZED_BOTH);
+                        mu.setVisible(true);
+                        mu.hakAksesMember();
+                        JOptionPane.showMessageDialog(null, "Selamat Data Member di Aplikasi Inventori Barang Tubes PBO IF A");
+                    }
                 }else{
                     JOptionPane.showMessageDialog(null, "Password Salah");
                     txtPassword.setText(null);
                     txtPassword.requestFocus();
                 }
+                this.dispose();
             }else{
                 JOptionPane.showMessageDialog(null, "Username tidak ditemukan");
                 txtUsername.setText(null);
@@ -233,4 +248,27 @@ public class login extends javax.swing.JFrame {
     private javax.swing.JPasswordField txtPassword;
     private javax.swing.JTextField txtUsername;
     // End of variables declaration//GEN-END:variables
+    private static String u_name;
+    private static String u_level;
+
+    public static String getU_name() {
+        return u_name;
+    }
+
+    public static void setU_name(String u_name) {
+        login.u_name = u_name;
+    }
+
+    public static String getU_level() {
+        return u_level;
+    }
+
+    public static void setU_level(String u_level) {
+        login.u_level = u_level;
+    }
+
+    
+    
+    
+    
 }
