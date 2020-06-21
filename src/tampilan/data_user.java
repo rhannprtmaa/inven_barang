@@ -5,7 +5,10 @@
  */
 package tampilan;
 
+import java.awt.HeadlessException;
+import java.awt.event.KeyEvent;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
@@ -84,11 +87,40 @@ public class data_user extends javax.swing.JDialog {
         }
     }
     
+    public void pencarian(String sql){
+        Object[] Baris = {"No","ID","Nama","Username","Password","Level"};
+        tabmode = new DefaultTableModel(null,Baris);
+        tblUser.setModel(tabmode);
+        int baris = tblUser.getRowCount();
+        for (int i = 0; i < baris; i++) {
+            tabmode.removeRow(i);
+        }
+//        String sql = "select * from tb_user order by id_user asc";
+        try {
+            java.sql.Statement stat = conn.createStatement();
+            ResultSet hasil = stat.executeQuery(sql);
+            while(hasil.next()){
+                String id_user = hasil.getString("id_user");
+                String nama = hasil.getString("nama");
+                String username = hasil.getString("username");
+                String password = hasil.getString("password");
+                String level = hasil.getString("level");
+                String [] data = {"",id_user,nama,username,password,level};
+                tabmode.addRow(data);
+                noTable();
+                lebarKolom();
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Data tidak bisa di tampilkan"+e);
+        }
+    }
+    
     
     public data_user(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
         dataTable();
+        txtID.setVisible(false);
     }
 
     /**
@@ -124,7 +156,6 @@ public class data_user extends javax.swing.JDialog {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Data User");
-        setModalityType(null);
 
         jPanel1.setBorder(javax.swing.BorderFactory.createEtchedBorder(javax.swing.border.EtchedBorder.RAISED));
 
@@ -140,13 +171,43 @@ public class data_user extends javax.swing.JDialog {
         jLabel4.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel4.setText("Level");
 
+        txtName.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtNameKeyPressed(evt);
+            }
+        });
+
+        txtUsername.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtUsernameKeyPressed(evt);
+            }
+        });
+
+        txtPassword.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtPasswordKeyPressed(evt);
+            }
+        });
+
         cbLevel.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "admin", "member", " " }));
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel5.setText("Buat User Baru");
 
+        txtID.setEditable(false);
+        txtID.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtIDActionPerformed(evt);
+            }
+        });
+
         btnSimpan.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         btnSimpan.setText("Simpan");
+        btnSimpan.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSimpanActionPerformed(evt);
+            }
+        });
 
         btnUbah.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         btnUbah.setText("Ubah");
@@ -158,6 +219,11 @@ public class data_user extends javax.swing.JDialog {
 
         btnHapus.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         btnHapus.setText("Hapus");
+        btnHapus.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnHapusActionPerformed(evt);
+            }
+        });
 
         btnReset.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         btnReset.setText("Reset");
@@ -169,6 +235,11 @@ public class data_user extends javax.swing.JDialog {
 
         btnCancel.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         btnCancel.setText("Cancel");
+        btnCancel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -292,6 +363,11 @@ public class data_user extends javax.swing.JDialog {
 
         txtPencarian.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         txtPencarian.setText("Pencarian");
+        txtPencarian.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtPencarianKeyTyped(evt);
+            }
+        });
 
         jLabel6.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel6.setText("Cari User :");
@@ -339,7 +415,20 @@ public class data_user extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnUbahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUbahActionPerformed
-        // TODO add your handling code here:
+        String sql = "update tb_user set nama=?, username=?, password=?, level=? where id_user='"+txtID.getText()+"'";
+        try {
+            PreparedStatement stat = conn.prepareStatement(sql);
+            stat.setString(1, txtName.getText());
+            stat.setString(2, txtUsername.getText());
+            stat.setString(3, txtPassword.getText());
+            stat.setString(4, (String) cbLevel.getSelectedItem());
+            stat.executeUpdate();
+            JOptionPane.showMessageDialog(null, "Data berhasil di Ubah");
+            dataTable();
+            reset();
+        } catch (HeadlessException | SQLException e) {
+            JOptionPane.showMessageDialog(null, "Data gagal di Ubah"+e);
+        }
     }//GEN-LAST:event_btnUbahActionPerformed
 
     private void tblUserMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblUserMouseClicked
@@ -362,6 +451,85 @@ public class data_user extends javax.swing.JDialog {
     private void btnResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResetActionPerformed
        reset();
     }//GEN-LAST:event_btnResetActionPerformed
+
+    private void btnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSimpanActionPerformed
+        if(txtName.getText().equals("")){
+            JOptionPane.showMessageDialog(null, "Maaf nama tidak boleh kosong!");
+        } else if (txtUsername.getText().equals("")){
+            JOptionPane.showMessageDialog(null, "Maaf username tidak boleh kosong!");
+        } else if (txtPassword.getText().equals("")) {
+            JOptionPane.showMessageDialog(null, "Maaf password tidak boleh kosong!");
+        } else {
+            String sql = "insert into tb_user (nama,username,password,level) values (?,?,?,?)";
+            try {
+                PreparedStatement stat = conn.prepareCall(sql);
+                stat.setString(1, txtName.getText());
+                stat.setString(2, txtUsername.getText());
+                stat.setString(3, txtPassword.getText());
+                stat.setString(4, (String)cbLevel.getSelectedItem());
+                stat.executeUpdate();
+                dataTable();
+                txtName.requestFocus();
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(null, "Data gagal di simpan "+e);
+            }
+        }
+    }//GEN-LAST:event_btnSimpanActionPerformed
+
+    private void txtNameKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNameKeyPressed
+            if(evt.getKeyCode()==KeyEvent.VK_ENTER){
+                txtUsername.requestFocus();
+            }
+    }//GEN-LAST:event_txtNameKeyPressed
+
+    private void txtUsernameKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtUsernameKeyPressed
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            txtPassword.requestFocus();
+        }
+    }//GEN-LAST:event_txtUsernameKeyPressed
+
+    private void txtPasswordKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPasswordKeyPressed
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            cbLevel.requestFocus();
+        }
+    }//GEN-LAST:event_txtPasswordKeyPressed
+
+    private void btnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHapusActionPerformed
+            int pilihan =  JOptionPane.showConfirmDialog(null, "Apakah yakin ingin menghapus data","Konfirmasi Dialog",JOptionPane.YES_NO_OPTION);
+            if(pilihan == 0){
+                String sql = "delete from tb_user where id_user ='"+txtID.getText()+"'";
+                try {
+                    PreparedStatement stat = conn.prepareStatement(sql);
+                    stat.executeUpdate();
+                    JOptionPane.showMessageDialog(null, "data berhasil di hapus");
+                    dataTable();
+                    reset();
+                    txtName.requestFocus();
+                } catch (SQLException e) {
+                     JOptionPane.showMessageDialog(null, "data gagal di hapus"+e);
+                }
+            }
+            
+    }//GEN-LAST:event_btnHapusActionPerformed
+
+    private void txtPencarianKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPencarianKeyTyped
+       String pencariansql = "select * from tb_user " 
+               + "where nama like '%"+txtPencarian.getText()+"%' or "
+               + "username like '%"+txtPencarian.getText()+"%' or "
+               + "level like '%"+txtPencarian.getText()+"%' "
+               ;
+       pencarian(pencariansql);
+       lebarKolom();
+    }//GEN-LAST:event_txtPencarianKeyTyped
+
+    private void txtIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtIDActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtIDActionPerformed
+
+    private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
+        // TODO add your handling code here:
+        dispose();
+    }//GEN-LAST:event_btnCancelActionPerformed
 
     /**
      * @param args the command line arguments
