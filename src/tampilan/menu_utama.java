@@ -148,6 +148,11 @@ public class menu_utama extends javax.swing.JFrame {
         jMenu4.add(btnDataUser);
 
         btnDataKategori.setText("Data Kategori");
+        btnDataKategori.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDataKategoriActionPerformed(evt);
+            }
+        });
         jMenu4.add(btnDataKategori);
 
         btnDataBarang.setText("Data Barang");
@@ -222,6 +227,12 @@ public class menu_utama extends javax.swing.JFrame {
            data_user.setLocationRelativeTo(this);
            data_user.setVisible(true);
     }//GEN-LAST:event_btnDataUserActionPerformed
+
+    private void btnDataKategoriActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDataKategoriActionPerformed
+           data_kategori data_kategori = new data_kategori(this, rootPaneCheckingEnabled);
+           data_kategori.setLocationRelativeTo(this);
+           data_kategori.setVisible(true);
+    }//GEN-LAST:event_btnDataKategoriActionPerformed
 
     /**
      * @param args the command line arguments
