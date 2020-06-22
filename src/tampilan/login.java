@@ -168,13 +168,13 @@ public class login extends javax.swing.JFrame {
                         mu.setExtendedState(JFrame.MAXIMIZED_BOTH);
                         mu.setVisible(true);
                         mu.hakAksesAdmin();
-                        JOptionPane.showMessageDialog(null, "Selamat Data Admin di Aplikasi Inventori Barang Tubes PBO IF A");
+                        JOptionPane.showMessageDialog(null, "Selamat Data Admin di Aplikasi Inventori Barang ");
                     }else{
                         menu_utama mu = new menu_utama();
                         mu.setExtendedState(JFrame.MAXIMIZED_BOTH);
                         mu.setVisible(true);
                         mu.hakAksesMember();
-                        JOptionPane.showMessageDialog(null, "Selamat Data Member di Aplikasi Inventori Barang Tubes PBO IF A");
+                        JOptionPane.showMessageDialog(null, "Selamat Data Member di Aplikasi Inventori Barang ");
                     }
                 }else{
                     JOptionPane.showMessageDialog(null, "Password Salah");

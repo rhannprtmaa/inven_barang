@@ -5,7 +5,9 @@
         <group>
             <file>file:/C:/Users/Vandy/Documents/NetBeansProjects/inventori_barang/src/tampilan/menu_utama.java</file>
             <file>file:/C:/Users/Vandy/Documents/NetBeansProjects/inventori_barang/src/koneksi/koneksi.java</file>
-            <file>file:/C:/Users/Vandy/Documents/NetBeansProjects/inventori_barang/src/tampilan/login.java</file>
+            <file>file:/C:/Users/Vandy/Documents/NetBeansProjects/inventori_barang/src/tampilan/data_barang.java</file>
+            <file>file:/C:/Users/Vandy/Documents/NetBeansProjects/inventori_barang/src/tampilan/data_user.java</file>
+            <file>file:/C:/Users/Vandy/Documents/NetBeansProjects/inventori_barang/src/tampilan/data_kategori.java</file>
         </group>
     </open-files>
 </project-private>
