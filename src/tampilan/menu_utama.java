@@ -30,6 +30,7 @@ public class menu_utama extends javax.swing.JFrame {
     
     public menu_utama() {
         initComponents();
+        setExtendedState(MAXIMIZED_BOTH);
         labelName.setText(name);
         labelLevel.setText(level);
     }
@@ -164,9 +165,19 @@ public class menu_utama extends javax.swing.JFrame {
         jMenu4.add(btnDataBarang);
 
         btnDataSupplier.setText("Data Supplier");
+        btnDataSupplier.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDataSupplierActionPerformed(evt);
+            }
+        });
         jMenu4.add(btnDataSupplier);
 
         btnDataCustomer.setText("Data Customer");
+        btnDataCustomer.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDataCustomerActionPerformed(evt);
+            }
+        });
         jMenu4.add(btnDataCustomer);
 
         jMenuBar2.add(jMenu4);
@@ -174,6 +185,11 @@ public class menu_utama extends javax.swing.JFrame {
         jMenu1.setText("Transaksi");
 
         btnDataBarangMasuk.setText("Barang Masuk");
+        btnDataBarangMasuk.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDataBarangMasukActionPerformed(evt);
+            }
+        });
         jMenu1.add(btnDataBarangMasuk);
 
         btnDataBarangKeluar.setText("Barang Keluar");
@@ -244,6 +260,25 @@ public class menu_utama extends javax.swing.JFrame {
         data_barang.setLocationRelativeTo(this);
         data_barang.setVisible(true);
     }//GEN-LAST:event_btnDataBarangActionPerformed
+
+    private void btnDataSupplierActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDataSupplierActionPerformed
+        data_supplier data_supplier = new data_supplier(this, rootPaneCheckingEnabled);
+        data_supplier.setLocationRelativeTo(this);
+        data_supplier.setVisible(true);
+    }//GEN-LAST:event_btnDataSupplierActionPerformed
+
+    private void btnDataCustomerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDataCustomerActionPerformed
+        data_customer data_customer = new data_customer(this, rootPaneCheckingEnabled);
+        data_customer.setLocationRelativeTo(this);
+        data_customer.setVisible(true);
+    }//GEN-LAST:event_btnDataCustomerActionPerformed
+
+    private void btnDataBarangMasukActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDataBarangMasukActionPerformed
+        // TODO add your handling code here:
+        transaksi_barangmasuk transaksi_barangmasuk = new transaksi_barangmasuk(this, rootPaneCheckingEnabled);
+        transaksi_barangmasuk.setLocationRelativeTo(this);
+        transaksi_barangmasuk.setVisible(true);
+    }//GEN-LAST:event_btnDataBarangMasukActionPerformed
 
     /**
      * @param args the command line arguments
