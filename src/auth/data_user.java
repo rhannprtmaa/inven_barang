@@ -1,4 +1,4 @@
-package tampilan;
+package auth;
 
 import java.awt.HeadlessException;
 import java.awt.event.KeyEvent;
@@ -12,18 +12,17 @@ import javax.swing.table.TableColumn;
 import koneksi.koneksi;
 
 
-public class data_customer extends javax.swing.JDialog {
+public class data_user extends javax.swing.JDialog {
 
     public final Connection conn = new koneksi().connect();
     private DefaultTableModel tabmode;
     
     protected void reset(){
-        txtKodeCustomer.setText(null);
-        txtNamaCustomer.setText(null);
-        txtNoTelp.setText(null);
+        txtName.setText(null);
+        txtUsername.setText(null);
+        txtPassword.setText(null);
         txtID.setText(null);
-        txtAlamat.setText(null);
-        txtKodeCustomer.requestFocus();
+        cbLevel.setSelectedItem(null);
     }
     public void noTable(){
         int Baris = tabmode.getRowCount();
@@ -34,44 +33,40 @@ public class data_customer extends javax.swing.JDialog {
     }
     public void lebarKolom(){
         TableColumn kolom;
-        tblCustomer.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_ALL_COLUMNS);
-        kolom = tblCustomer.getColumnModel().getColumn(0);
+        tblUser.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_ALL_COLUMNS);
+        kolom = tblUser.getColumnModel().getColumn(0);
         kolom.setPreferredWidth(40);
 //        ID
-        kolom = tblCustomer.getColumnModel().getColumn(1);
+        kolom = tblUser.getColumnModel().getColumn(1);
         kolom.setPreferredWidth(50);
-//        Kode Customer
-        kolom = tblCustomer.getColumnModel().getColumn(2);
+//        Nama
+        kolom = tblUser.getColumnModel().getColumn(2);
         kolom.setPreferredWidth(100);
-//        Nama Customer
-        kolom = tblCustomer.getColumnModel().getColumn(3);
+//        Username
+        kolom = tblUser.getColumnModel().getColumn(3);
         kolom.setPreferredWidth(100);
-//        No Telpon
-        kolom = tblCustomer.getColumnModel().getColumn(4);
-        kolom.setPreferredWidth(50);
-//        alamat
-        kolom = tblCustomer.getColumnModel().getColumn(5);
-        kolom.setPreferredWidth(150);
+//        Password
+        kolom = tblUser.getColumnModel().getColumn(4);
+        kolom.setPreferredWidth(100);
+//        Level
+        kolom = tblUser.getColumnModel().getColumn(5);
+        kolom.setPreferredWidth(70);
     }
-     
-    
-    
-    
     public void dataTable(){
-        Object[] Baris = {"No","ID","Kode Customer","Nama Customer","No Handphone","Alamat"};
+        Object[] Baris = {"No","ID","Nama","Username","Password","Level"};
         tabmode = new DefaultTableModel(null,Baris);
-        tblCustomer.setModel(tabmode);
-        String sql = "select * from tb_customer order by id_customer asc";
+        tblUser.setModel(tabmode);
+        String sql = "select * from tb_user order by id_user asc";
         try {
             java.sql.Statement stat = conn.createStatement();
             ResultSet hasil = stat.executeQuery(sql);
             while(hasil.next()){
-                String id_customer = hasil.getString("id_customer");
-                String kode_customer = hasil.getString("kode_customer");
-                String nama_customer = hasil.getString("nama_customer");
-                String notelpon_customer = hasil.getString("notelpon_customer");
-                String alamat_customer = hasil.getString("alamat_customer");
-                String [] data = {"",id_customer,kode_customer,nama_customer,notelpon_customer,alamat_customer};
+                String id_user = hasil.getString("id_user");
+                String nama = hasil.getString("nama");
+                String username = hasil.getString("username");
+                String password = hasil.getString("password");
+                String level = hasil.getString("level");
+                String [] data = {"",id_user,nama,username,password,level};
                 tabmode.addRow(data);
                 noTable();
                 lebarKolom();
@@ -80,12 +75,12 @@ public class data_customer extends javax.swing.JDialog {
             JOptionPane.showMessageDialog(null, "Data tidak bisa di tampilkan"+e);
         }
     }
-     
+    
     public void pencarian(String sql){
-        Object[] Baris = {"No","ID","Kode Customer","Nama Suppler","No Handphone","Alamat"};
+        Object[] Baris = {"No","ID","Nama","Username","Password","Level"};
         tabmode = new DefaultTableModel(null,Baris);
-        tblCustomer.setModel(tabmode);
-        int baris = tblCustomer.getRowCount();
+        tblUser.setModel(tabmode);
+        int baris = tblUser.getRowCount();
         for (int i = 0; i < baris; i++) {
             tabmode.removeRow(i);
         }
@@ -94,12 +89,12 @@ public class data_customer extends javax.swing.JDialog {
             java.sql.Statement stat = conn.createStatement();
             ResultSet hasil = stat.executeQuery(sql);
             while(hasil.next()){
-                String id_customer = hasil.getString("id_customer");
-                String kode_customer = hasil.getString("kode_customer");
-                String nama_customer = hasil.getString("nama_customer");
-                String notelpon_customer = hasil.getString("notelpon_customer");
-                String alamat_customer = hasil.getString("alamat_customer");
-                String [] data = {"",id_customer,kode_customer,nama_customer,notelpon_customer,alamat_customer};
+                String id_user = hasil.getString("id_user");
+                String nama = hasil.getString("nama");
+                String username = hasil.getString("username");
+                String password = hasil.getString("password");
+                String level = hasil.getString("level");
+                String [] data = {"",id_user,nama,username,password,level};
                 tabmode.addRow(data);
                 noTable();
                 lebarKolom();
@@ -108,12 +103,12 @@ public class data_customer extends javax.swing.JDialog {
             JOptionPane.showMessageDialog(null, "Data tidak bisa di tampilkan"+e);
         }
     }
-       
-    public data_customer(java.awt.Frame parent, boolean modal) {
+    
+    
+    public data_user(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
         dataTable();
-        lebarKolom();
         txtID.setVisible(false);
     }
 
@@ -122,17 +117,15 @@ public class data_customer extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        frameDaftarKategori = new javax.swing.JFrame();
-        txtCariKategori = new javax.swing.JTextField();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        tableKategori = new javax.swing.JTable();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        txtKodeCustomer = new javax.swing.JTextField();
-        txtNamaCustomer = new javax.swing.JTextField();
-        txtNoTelp = new javax.swing.JTextField();
+        jLabel4 = new javax.swing.JLabel();
+        txtName = new javax.swing.JTextField();
+        txtUsername = new javax.swing.JTextField();
+        txtPassword = new javax.swing.JTextField();
+        cbLevel = new javax.swing.JComboBox<>();
         jLabel5 = new javax.swing.JLabel();
         txtID = new javax.swing.JTextField();
         btnSimpan = new javax.swing.JButton();
@@ -140,111 +133,53 @@ public class data_customer extends javax.swing.JDialog {
         btnHapus = new javax.swing.JButton();
         btnReset = new javax.swing.JButton();
         btnCancel = new javax.swing.JButton();
-        jLabel7 = new javax.swing.JLabel();
-        jScrollPane3 = new javax.swing.JScrollPane();
-        txtAlamat = new javax.swing.JTextArea();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        tblCustomer = new javax.swing.JTable();
+        tblUser = new javax.swing.JTable();
         txtPencarian = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
 
-        frameDaftarKategori.setTitle("Daftar Kategori");
-        frameDaftarKategori.setModalExclusionType(null);
-        frameDaftarKategori.setSize(new java.awt.Dimension(400, 400));
-
-        txtCariKategori.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtCariKategoriActionPerformed(evt);
-            }
-        });
-        txtCariKategori.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                txtCariKategoriKeyTyped(evt);
-            }
-        });
-
-        tableKategori.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
-            }
-        ));
-        tableKategori.setRowHeight(30);
-        tableKategori.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                tableKategoriMouseClicked(evt);
-            }
-        });
-        tableKategori.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                tableKategoriKeyPressed(evt);
-            }
-        });
-        jScrollPane2.setViewportView(tableKategori);
-
-        javax.swing.GroupLayout frameDaftarKategoriLayout = new javax.swing.GroupLayout(frameDaftarKategori.getContentPane());
-        frameDaftarKategori.getContentPane().setLayout(frameDaftarKategoriLayout);
-        frameDaftarKategoriLayout.setHorizontalGroup(
-            frameDaftarKategoriLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(frameDaftarKategoriLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(frameDaftarKategoriLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 381, Short.MAX_VALUE)
-                    .addComponent(txtCariKategori))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        frameDaftarKategoriLayout.setVerticalGroup(
-            frameDaftarKategoriLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(frameDaftarKategoriLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(txtCariKategori, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 365, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Data Customer");
-        setModalityType(null);
+        setTitle("Data User");
 
         jPanel1.setBackground(new java.awt.Color(71, 93, 145));
         jPanel1.setBorder(javax.swing.BorderFactory.createEtchedBorder(javax.swing.border.EtchedBorder.RAISED));
+        jPanel1.setForeground(new java.awt.Color(0, 0, 0));
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jLabel1.setText("Kode Customer");
+        jLabel1.setText("Nama ");
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jLabel2.setText("Nama ");
+        jLabel2.setText("Username");
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jLabel3.setText("No Telpon");
+        jLabel3.setText("Password");
 
-        txtKodeCustomer.addKeyListener(new java.awt.event.KeyAdapter() {
+        jLabel4.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel4.setText("Level");
+
+        txtName.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
-                txtKodeCustomerKeyPressed(evt);
+                txtNameKeyPressed(evt);
             }
         });
 
-        txtNamaCustomer.addKeyListener(new java.awt.event.KeyAdapter() {
+        txtUsername.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
-                txtNamaCustomerKeyPressed(evt);
+                txtUsernameKeyPressed(evt);
             }
         });
 
-        txtNoTelp.addKeyListener(new java.awt.event.KeyAdapter() {
+        txtPassword.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
-                txtNoTelpKeyPressed(evt);
+                txtPasswordKeyPressed(evt);
             }
         });
+
+        cbLevel.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "admin", "member", " " }));
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jLabel5.setText("Buat Customer Baru");
+        jLabel5.setText("Buat User Baru");
 
         txtID.setEditable(false);
         txtID.addActionListener(new java.awt.event.ActionListener() {
@@ -293,15 +228,6 @@ public class data_customer extends javax.swing.JDialog {
             }
         });
 
-        jLabel7.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jLabel7.setText("Alamat");
-
-        txtAlamat.setColumns(20);
-        txtAlamat.setLineWrap(true);
-        txtAlamat.setRows(4);
-        txtAlamat.setWrapStyleWord(true);
-        jScrollPane3.setViewportView(txtAlamat);
-
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -315,37 +241,37 @@ public class data_customer extends javax.swing.JDialog {
                                 .addComponent(jLabel5))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addContainerGap()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txtID, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addGap(0, 0, Short.MAX_VALUE))
+                                .addComponent(txtID, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 118, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                        .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(txtNoTelp, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 215, Short.MAX_VALUE)
-                                    .addComponent(txtNamaCustomer, javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(txtKodeCustomer, javax.swing.GroupLayout.Alignment.TRAILING)))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtName))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(cbLevel, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtUsername))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtPassword))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(btnSimpan, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(btnUbah, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(btnHapus, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGap(4, 4, 4))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addGap(0, 0, Short.MAX_VALUE)
-                                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                .addGap(4, 4, 4)))))
                 .addContainerGap())
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGap(0, 55, Short.MAX_VALUE)
+                .addGap(0, 0, Short.MAX_VALUE)
                 .addComponent(btnReset, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(btnCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -359,22 +285,21 @@ public class data_customer extends javax.swing.JDialog {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtKodeCustomer, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtName, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtNamaCustomer, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtUsername, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtNoTelp, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(62, 62, 62)
-                        .addComponent(txtID, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cbLevel, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(txtID, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnSimpan, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -384,13 +309,13 @@ public class data_customer extends javax.swing.JDialog {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnReset, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(208, 208, 208))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jPanel2.setBackground(new java.awt.Color(71, 93, 145));
         jPanel2.setBorder(javax.swing.BorderFactory.createEtchedBorder(javax.swing.border.EtchedBorder.RAISED));
 
-        tblCustomer.setModel(new javax.swing.table.DefaultTableModel(
+        tblUser.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null, null},
                 {null, null, null, null, null, null},
@@ -415,14 +340,14 @@ public class data_customer extends javax.swing.JDialog {
                 return canEdit [columnIndex];
             }
         });
-        tblCustomer.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        tblCustomer.setRowHeight(30);
-        tblCustomer.addMouseListener(new java.awt.event.MouseAdapter() {
+        tblUser.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        tblUser.setRowHeight(30);
+        tblUser.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                tblCustomerMouseClicked(evt);
+                tblUserMouseClicked(evt);
             }
         });
-        jScrollPane1.setViewportView(tblCustomer);
+        jScrollPane1.setViewportView(tblUser);
 
         txtPencarian.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         txtPencarian.setText("Pencarian");
@@ -433,7 +358,7 @@ public class data_customer extends javax.swing.JDialog {
         });
 
         jLabel6.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jLabel6.setText("Cari Customer :");
+        jLabel6.setText("Cari User :");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -456,7 +381,7 @@ public class data_customer extends javax.swing.JDialog {
                     .addComponent(jLabel6))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 410, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(100, Short.MAX_VALUE))
+                .addContainerGap(51, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -478,13 +403,13 @@ public class data_customer extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnUbahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUbahActionPerformed
-        String sql = "update tb_customer set kode_customer=?, nama_customer=?, notelpon_customer=?, alamat_customer=? where id_customer='"+txtID.getText()+"'";
+        String sql = "update tb_user set nama=?, username=?, password=?, level=? where id_user='"+txtID.getText()+"'";
         try {
             PreparedStatement stat = conn.prepareStatement(sql);
-            stat.setString(1, txtKodeCustomer.getText());
-            stat.setString(2, txtNamaCustomer.getText());
-            stat.setString(3, txtNoTelp.getText());
-            stat.setString(4, txtAlamat.getText());
+            stat.setString(1, txtName.getText());
+            stat.setString(2, txtUsername.getText());
+            stat.setString(3, txtPassword.getText());
+            stat.setString(4, (String) cbLevel.getSelectedItem());
             stat.executeUpdate();
             JOptionPane.showMessageDialog(null, "Data berhasil di Ubah");
             dataTable();
@@ -494,86 +419,83 @@ public class data_customer extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_btnUbahActionPerformed
 
-    private void tblCustomerMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblCustomerMouseClicked
-        int baris = tblCustomer.getSelectedRow();
-        String no = tabmode.getValueAt(baris, 0).toString();
-        String id = tabmode.getValueAt(baris, 1).toString();
-        String kode_customer = tabmode.getValueAt(baris, 2).toString();
-        String nama_customer = tabmode.getValueAt(baris, 3).toString();
-        String notelpon_customer = tabmode.getValueAt(baris, 5).toString();
-        String alamat_customer = tabmode.getValueAt(baris, 4).toString();
+    private void tblUserMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblUserMouseClicked
+        int baris       = tblUser.getSelectedRow();
+        String no       = tabmode.getValueAt(baris, 0).toString();
+        String id       = tabmode.getValueAt(baris, 1).toString();
+        String nama     = tabmode.getValueAt(baris, 2).toString();
+        String username = tabmode.getValueAt(baris, 3).toString();
+        String password = tabmode.getValueAt(baris, 4).toString();
+        String level    = tabmode.getValueAt(baris, 5).toString();
         
         txtID.setText(id);
-        txtKodeCustomer.setText(kode_customer);
-        txtNamaCustomer.setText(nama_customer);
-        txtNoTelp.setText(notelpon_customer);
-        txtAlamat.setText(alamat_customer);
-
+        txtName.setText(nama);
+        txtUsername.setText(username);
+        txtPassword.setText(password);
+        cbLevel.setSelectedItem(level);
         
-    }//GEN-LAST:event_tblCustomerMouseClicked
+    }//GEN-LAST:event_tblUserMouseClicked
 
     private void btnResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResetActionPerformed
        reset();
     }//GEN-LAST:event_btnResetActionPerformed
 
     private void btnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSimpanActionPerformed
-//        String nomerhp = txtNoTelp.getText();
-        if(txtKodeCustomer.getText().equals("")){
-            JOptionPane.showMessageDialog(null, "Maaf Kode Customer tidak boleh kosong!");
-        } else if (txtNamaCustomer.getText().equals("")){
-            JOptionPane.showMessageDialog(null, "Maaf Nama Customer tidak boleh kosong!");
-        } else if (txtNoTelp.getText().equals("")) {
-            JOptionPane.showMessageDialog(null, "Maaf No Telpon Customer tidak boleh kosong!");
-        } else if (txtAlamat.getText().equals("")) {
-            JOptionPane.showMessageDialog(null, "Maaf Alamat Customer tidak boleh kosong!");
+        if(txtName.getText().equals("")){
+            JOptionPane.showMessageDialog(null, "Maaf nama tidak boleh kosong!");
+        } else if (txtUsername.getText().equals("")){
+            JOptionPane.showMessageDialog(null, "Maaf username tidak boleh kosong!");
+        } else if (txtPassword.getText().equals("")) {
+            JOptionPane.showMessageDialog(null, "Maaf password tidak boleh kosong!");
         } else {
-           
-            String sql = "insert into tb_customer (kode_customer,nama_customer,notelpon_customer,alamat_customer) values (?,?,?,?)";
+            String sql = "insert into tb_user (nama,username,password,level) values (?,?,?,?)";
             try {
                 PreparedStatement stat = conn.prepareCall(sql);
-                stat.setString(1, txtKodeCustomer.getText());
-                stat.setString(2, txtNamaCustomer.getText());
-                stat.setString(3, txtNoTelp.getText());
-                stat.setString(4, txtAlamat.getText());
+                stat.setString(1, txtName.getText());
+                stat.setString(2, txtUsername.getText());
+                stat.setString(3, txtPassword.getText());
+                stat.setString(4, (String)cbLevel.getSelectedItem());
                 stat.executeUpdate();
                 JOptionPane.showMessageDialog(null, "data berhasil di simpan");
                 
                 dataTable();
                 reset();
-                txtKodeCustomer.requestFocus();
+                txtName.requestFocus();
             } catch (SQLException e) {
                 JOptionPane.showMessageDialog(null, "Data gagal di simpan "+e);
             }
         }
     }//GEN-LAST:event_btnSimpanActionPerformed
 
-    private void txtKodeCustomerKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtKodeCustomerKeyPressed
+    private void txtNameKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNameKeyPressed
             if(evt.getKeyCode()==KeyEvent.VK_ENTER){
-                txtNamaCustomer.requestFocus();
+                txtUsername.requestFocus();
             }
-    }//GEN-LAST:event_txtKodeCustomerKeyPressed
+    }//GEN-LAST:event_txtNameKeyPressed
 
-    private void txtNamaCustomerKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNamaCustomerKeyPressed
+    private void txtUsernameKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtUsernameKeyPressed
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-            txtNoTelp.requestFocus();
+            txtPassword.requestFocus();
         }
-    }//GEN-LAST:event_txtNamaCustomerKeyPressed
+    }//GEN-LAST:event_txtUsernameKeyPressed
 
-    private void txtNoTelpKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNoTelpKeyPressed
-       
-    }//GEN-LAST:event_txtNoTelpKeyPressed
+    private void txtPasswordKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPasswordKeyPressed
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            cbLevel.requestFocus();
+        }
+    }//GEN-LAST:event_txtPasswordKeyPressed
 
     private void btnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHapusActionPerformed
             int pilihan =  JOptionPane.showConfirmDialog(null, "Apakah yakin ingin menghapus data","Konfirmasi Dialog",JOptionPane.YES_NO_OPTION);
             if(pilihan == 0){
-                String sql = "delete from tb_customer where id_customer ='"+txtID.getText()+"'";
+                String sql = "delete from tb_user where id_user ='"+txtID.getText()+"'";
                 try {
                     PreparedStatement stat = conn.prepareStatement(sql);
                     stat.executeUpdate();
                     JOptionPane.showMessageDialog(null, "data berhasil di hapus");
                     dataTable();
                     reset();
-                    txtKodeCustomer.requestFocus();
+                    txtName.requestFocus();
                 } catch (SQLException e) {
                      JOptionPane.showMessageDialog(null, "data gagal di hapus"+e);
                 }
@@ -582,11 +504,10 @@ public class data_customer extends javax.swing.JDialog {
     }//GEN-LAST:event_btnHapusActionPerformed
 
     private void txtPencarianKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPencarianKeyTyped
-       String pencariansql = "select * from tb_customer " 
-               + "where kode_customer like '%"+txtPencarian.getText()+"%' or "
-               + "nama_customer like '%"+txtPencarian.getText()+"%' or "
-               + "notelpon_customer like '%"+txtPencarian.getText()+"%' or "
-               + "alamat_customer like '%"+txtPencarian.getText()+"%' "
+       String pencariansql = "select * from tb_user " 
+               + "where nama like '%"+txtPencarian.getText()+"%' or "
+               + "username like '%"+txtPencarian.getText()+"%' or "
+               + "level like '%"+txtPencarian.getText()+"%' "
                ;
        pencarian(pencariansql);
        lebarKolom();
@@ -601,24 +522,37 @@ public class data_customer extends javax.swing.JDialog {
         dispose();
     }//GEN-LAST:event_btnCancelActionPerformed
 
-    private void txtCariKategoriActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCariKategoriActionPerformed
-    }//GEN-LAST:event_txtCariKategoriActionPerformed
-
-    private void tableKategoriKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tableKategoriKeyPressed
-        
-    }//GEN-LAST:event_tableKategoriKeyPressed
-
-    private void tableKategoriMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableKategoriMouseClicked
-    }//GEN-LAST:event_tableKategoriMouseClicked
-
-    private void txtCariKategoriKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCariKategoriKeyTyped
-    }//GEN-LAST:event_txtCariKategoriKeyTyped
-
+    /**
+     * @param args the command line arguments
+     */
     public static void main(String args[]) {
+        /* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(data_user.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(data_user.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(data_user.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(data_user.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //</editor-fold>
+
+        /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
-            @Override
             public void run() {
-                data_customer dialog = new data_customer(new javax.swing.JFrame(), true);
+                data_user dialog = new data_user(new javax.swing.JFrame(), true);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {
@@ -636,26 +570,21 @@ public class data_customer extends javax.swing.JDialog {
     private javax.swing.JButton btnReset;
     private javax.swing.JButton btnSimpan;
     private javax.swing.JButton btnUbah;
-    private javax.swing.JFrame frameDaftarKategori;
+    private javax.swing.JComboBox<String> cbLevel;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JTable tableKategori;
-    private javax.swing.JTable tblCustomer;
-    private javax.swing.JTextArea txtAlamat;
-    private javax.swing.JTextField txtCariKategori;
+    private javax.swing.JTable tblUser;
     private javax.swing.JTextField txtID;
-    private javax.swing.JTextField txtKodeCustomer;
-    private javax.swing.JTextField txtNamaCustomer;
-    private javax.swing.JTextField txtNoTelp;
+    private javax.swing.JTextField txtName;
+    private javax.swing.JTextField txtPassword;
     private javax.swing.JTextField txtPencarian;
+    private javax.swing.JTextField txtUsername;
     // End of variables declaration//GEN-END:variables
 }
